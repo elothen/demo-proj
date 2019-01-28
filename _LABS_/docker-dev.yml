@@ -1,0 +1,22 @@
+version: '3'
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - "5000:80"
+      - "5001:443"
+    volumes:
+      - /app/node_modules
+      - /app/bin
+      - /app/obj
+      - .:/app
+    depends_on:
+      - mssql-server
+  mssql-server:
+    image: 'mcr.microsoft.com/mssql/server:2017-latest'
+    environment:
+      SA_PASSWORD: "T3stP4ssw0rd!"
+      ACCEPT_EULA: "Y"
+    command: sh -c '/opt/mssql/bin/sqlservr;'  
